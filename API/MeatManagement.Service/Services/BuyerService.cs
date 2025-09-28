@@ -34,15 +34,19 @@ namespace MeatManager.Service.Services
 
         public async Task<ServiceResult<bool>> DeleteAsync(Guid id)
         {
+            var exists = await buyerRepository.ExistsAsync(id);
+            if (!exists)
+                return ServiceResult<bool>.Fail(Messages.ItemNotFound, ServiceError.NotFound);
+
             var hasOrders = await buyerRepository.HasOrdersAsync(id);
             if (hasOrders)
-                return ServiceResult<bool>.Fail(Messages.BuyerHasOrders);
+                return ServiceResult<bool>.Fail(Messages.BuyerHasOrders, ServiceError.Conflict);
 
             var deleted = await buyerRepository.DeleteAsync(id);
             if (deleted)
-                return ServiceResult<bool>.Ok(true);
+                return true;
 
-            return ServiceResult<bool>.Fail(Messages.DeleteItemFailed);
+            return ServiceResult<bool>.Fail(Messages.DeleteItemFailed, ServiceError.InternalError);
         }
 
         public async Task<ServiceResult<IEnumerable<BuyerDto>>> GetAllAsync()
@@ -56,7 +60,7 @@ namespace MeatManager.Service.Services
         {
             var buyer = await buyerRepository.GetAsync(id);
             if (buyer == null)
-                return ServiceResult<BuyerDto>.Fail(Messages.ItemNotFound);
+                return ServiceResult<BuyerDto>.Fail(Messages.ItemNotFound, ServiceError.NotFound);
 
             return buyer.Adapt<BuyerDto>();
         }

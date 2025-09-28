@@ -1,6 +1,5 @@
 ﻿using MeatManager.Service.DTOs;
 using MeatManager.Service.Interfaces;
-using MeatManager.Service.Resources;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MeatManager.API
@@ -21,7 +20,7 @@ namespace MeatManager.API
         {
             var result = await buyerService.GetAllAsync();
             if (!result.Success)
-                return BadRequest(result.Message);
+                return BadRequest(result.Errors ?? new[] { result.Message });
 
             return Ok(result.Data);
         }
@@ -31,8 +30,13 @@ namespace MeatManager.API
         {
             var result = await buyerService.GetByIdAsync(id);
             if (!result.Success)
-                return NotFound(result.Message);
-
+            {
+                return result.ErrorCode switch
+                {
+                    ServiceError.NotFound => NotFound(result.Message),
+                    _ => BadRequest(result.Errors ?? new[] { result.Message })
+                };
+            }
             return Ok(result.Data);
         }
 
@@ -43,7 +47,7 @@ namespace MeatManager.API
             if (!result.Success)
                 return BadRequest(result.Errors ?? new[] { result.Message });
 
-            return CreatedAtAction(nameof(GetById), new { id = result.Data.Id }, result.Data);
+            return CreatedAtAction("compradores", new { id = result.Data.Id }, result.Data);
         }
 
         [HttpPut("{id}")]
@@ -61,8 +65,14 @@ namespace MeatManager.API
         {
             var result = await buyerService.DeleteAsync(id);
             if (!result.Success)
-                return BadRequest(result.Errors ?? new[] { result.Message });
-
+            {
+                return result.ErrorCode switch
+                {
+                    ServiceError.Conflict => Conflict(result.Message),
+                    ServiceError.NotFound => NotFound(result.Message),
+                    _ => BadRequest(result.Errors ?? new[] { result.Message })
+                };
+            }
             return NoContent();
         }
     }

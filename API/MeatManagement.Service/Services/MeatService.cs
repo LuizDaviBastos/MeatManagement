@@ -21,10 +21,8 @@ namespace MeatManager.Service.Services
         public async Task<ServiceResult<MeatDto>> CreateAsync(MeatDto dto)
         {
             var validationResult = await validator.ValidateAsync(dto);
-            if (!validationResult.IsValid) 
-            {
-                ServiceResult<MeatDto>.Fail(validationResult.Errors.Select(e => e.ErrorMessage));
-            }
+            if (!validationResult.IsValid)
+                return ServiceResult<MeatDto>.Fail(validationResult.Errors.Select(e => e.ErrorMessage));
 
             var meat = dto.Adapt<Meat>();
             meat.CreatedAt = DateTime.UtcNow;
@@ -35,13 +33,16 @@ namespace MeatManager.Service.Services
 
         public async Task<ServiceResult<bool>> DeleteAsync(Guid id)
         {
+            var exists = await meatRepository.ExistsAsync(id);
+            if (!exists)
+                return ServiceResult<bool>.Fail(Messages.ItemNotFound);
+
             var hasOrders = await meatRepository.HasOrdersAsync(id);
             if (hasOrders)
                 return ServiceResult<bool>.Fail(Messages.MeatHasOrders);
 
             var deleted = await meatRepository.DeleteAsync(id);
-            if (deleted)
-                return ServiceResult<bool>.Ok(true);
+            if (deleted) return true;
 
             return ServiceResult<bool>.Fail(Messages.DeleteItemFailed);
         }
@@ -66,9 +67,7 @@ namespace MeatManager.Service.Services
         {
             var validationResult = await validator.ValidateAsync(dto);
             if (!validationResult.IsValid)
-            {
-                ServiceResult<MeatDto>.Fail(validationResult.Errors.Select(e => e.ErrorMessage));
-            }
+                return ServiceResult<MeatDto>.Fail(validationResult.Errors.Select(e => e.ErrorMessage));
 
             var meat = dto.Adapt<Meat>();
             meat.Id = id;
