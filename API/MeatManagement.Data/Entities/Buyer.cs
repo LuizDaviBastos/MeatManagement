@@ -11,6 +11,6 @@ namespace MeatManager.Data.Entities
         public DocumentType DocumentType { get; set; }
         public DateTime CreatedAt { get; set; }
         public ICollection<Order> Orders { get; set; }
-        public virtual Address Address { get; set; }
+        public virtual Address? Address { get; set; }
     }
 }

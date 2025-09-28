@@ -1,3 +1,4 @@
+using MeatManager.API.Extensions;
 using MeatManager.Data;
 using MeatManager.Service;
 
@@ -10,6 +11,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 builder.Services.ConfigurePersistenceApp(builder.Configuration);
 builder.Services.ConfigureServiceApp(builder.Configuration);
+builder.Services.ConfigureCorsPolicy();
 
 
 var app = builder.Build();
@@ -21,9 +23,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
+app.UseCors();
 app.MapControllers();
-
 app.Run();

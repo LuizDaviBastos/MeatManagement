@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MeatManager.Data.Migrations
 {
     [DbContext(typeof(MeatManagerContext))]
-    [Migration("20250928172151_Initial")]
+    [Migration("20250928182824_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

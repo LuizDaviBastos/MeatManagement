@@ -1,4 +1,5 @@
 ﻿using MeatManager.Model.Interfaces;
+using MeatManager.Model.ValueObjects;
 
 namespace MeatManager.Model.Entities
 {
@@ -6,9 +7,13 @@ namespace MeatManager.Model.Entities
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string Document { get; set; }
-        public string DocumentType { get; set; }
+        public Document Document { get; set; }
         public DateTime CreatedAt { get; set; }
-        public Address Address { get; set; }
+        public Address? Address { get; set; }
+
+        public void SetDocument(string value)
+        {
+            Document = new Document(value);
+        }
     }
 }

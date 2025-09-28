@@ -1,4 +1,5 @@
 ﻿using MeatManager.Data.Data;
+using MeatManager.Data.Mapping;
 using MeatManager.Data.Repositories;
 using MeatManager.Model.Interfaces;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +11,8 @@ namespace MeatManager.Data
     {
         public static void ConfigurePersistenceApp(this IServiceCollection services, IConfiguration configuration)
         {
+            MapsterConfig.RegisterMappings();
+
             string? connectionString = configuration.GetConnectionString("DbConnection");
             services.AddScoped<MeatManagerContext>(x => new(connectionString));
 

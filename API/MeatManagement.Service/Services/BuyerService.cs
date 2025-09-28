@@ -26,6 +26,16 @@ namespace MeatManager.Service.Services
                 return ServiceResult<BuyerDto>.Fail(validationResult.Errors.Select(e => e.ErrorMessage));
 
             var buyer = dto.Adapt<Buyer>();
+            
+            try
+            {
+                buyer.SetDocument(dto.Document);
+            }
+            catch (ArgumentException ex)
+            {
+                return ServiceResult<BuyerDto>.Fail(ex.Message, ServiceError.ValidationFailed);
+            }
+
             buyer.CreatedAt = DateTime.UtcNow;
 
             var response = await buyerRepository.SaveAsync(buyer);

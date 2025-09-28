@@ -1,56 +1,115 @@
-﻿using AutoMapper;
+﻿using MeatManager.API.Resources;
 using MeatManager.Service.DTOs;
 using MeatManager.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MeatManager.API.Controllers
 {
-    namespace MeatManager.API.Controllers
+    [ApiController]
+    [Route("pedidos")]
+    public class OrdersController : ControllerBase
     {
-        [ApiController]
-        [Route("pedidos")]
-        public class OrdersController : ControllerBase
+        private readonly IOrderService orderService;
+
+        public OrdersController(IOrderService orderService)
         {
-            private readonly IOrderService orderService;
+            this.orderService = orderService;
+        }
 
-            public OrdersController(IOrderService service, IMapper mapper)
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            try
             {
-                this.orderService = service;
+                var result = await orderService.GetAllAsync();
+                if (!result.Success)
+                    return BadRequest(result.Errors ?? new[] { result.Message });
+
+                return Ok(result.Data);
             }
-
-            [HttpGet]
-            public async Task<IActionResult> GetAll()
+            catch
             {
-                var orders = orderService.GetAllAsync();
-                return Ok(orders);
+                return StatusCode(500, Messages.UnexpectedError);
             }
+        }
 
-            [HttpGet("{id}")]
-            public async Task<IActionResult> GetById(Guid id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            try
             {
-                var order = await orderService.GetByIdAsync(id);
-                return Ok(order);
+                var result = await orderService.GetByIdAsync(id);
+                if (!result.Success)
+                {
+                    return result.ErrorCode switch
+                    {
+                        ServiceError.NotFound => NotFound(result.Message),
+                        _ => BadRequest(result.Errors ?? new[] { result.Message })
+                    };
+                }
+                return Ok(result.Data);
             }
-
-            [HttpPost]
-            public async Task<IActionResult> Create([FromBody] OrderDto order)
+            catch
             {
-                var createResponse = await orderService.CreateAsync(order);
-                return Ok(createResponse);
+                return StatusCode(500, Messages.UnexpectedError);
             }
+        }
 
-            [HttpPut("{id}")]
-            public async Task<IActionResult> Update(Guid id, [FromBody] object request)
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] OrderDto dto)
+        {
+            try
             {
-                return Ok();
+                var result = await orderService.CreateAsync(dto);
+                if (!result.Success)
+                    return BadRequest(result.Errors ?? new[] { result.Message });
+
+                return StatusCode(StatusCodes.Status201Created, result.Data);
             }
-
-            [HttpDelete("{id}")]
-            public async Task<IActionResult> Delete(Guid id)
+            catch
             {
-                return Ok();
+                return StatusCode(500, Messages.UnexpectedError);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] OrderDto dto)
+        {
+            try
+            {
+                var result = await orderService.UpdateAsync(id, dto);
+                if (!result.Success)
+                    return BadRequest(result.Errors ?? new[] { result.Message });
+
+                return Ok(result.Data);
+            }
+            catch
+            {
+                return StatusCode(500, Messages.UnexpectedError);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                var result = await orderService.DeleteAsync(id);
+                if (!result.Success)
+                {
+                    return result.ErrorCode switch
+                    {
+                        ServiceError.Conflict => Conflict(result.Message),
+                        ServiceError.NotFound => NotFound(result.Message),
+                        _ => BadRequest(result.Errors ?? new[] { result.Message })
+                    };
+                }
+                return NoContent();
+            }
+            catch
+            {
+                return StatusCode(500, Messages.UnexpectedError);
             }
         }
     }
-
 }

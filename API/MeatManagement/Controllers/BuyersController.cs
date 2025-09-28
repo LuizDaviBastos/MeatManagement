@@ -1,4 +1,5 @@
-﻿using MeatManager.Service.DTOs;
+﻿using MeatManager.API.Resources;
+using MeatManager.Service.DTOs;
 using MeatManager.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,62 +19,97 @@ namespace MeatManager.API
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var result = await buyerService.GetAllAsync();
-            if (!result.Success)
-                return BadRequest(result.Errors ?? new[] { result.Message });
+            try
+            {
+                var result = await buyerService.GetAllAsync();
+                if (!result.Success)
+                    return BadRequest(result.Errors ?? new[] { result.Message });
 
-            return Ok(result.Data);
+                return Ok(result.Data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, Messages.UnexpectedError);
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var result = await buyerService.GetByIdAsync(id);
-            if (!result.Success)
+            try
             {
-                return result.ErrorCode switch
+                var result = await buyerService.GetByIdAsync(id);
+                if (!result.Success)
                 {
-                    ServiceError.NotFound => NotFound(result.Message),
-                    _ => BadRequest(result.Errors ?? new[] { result.Message })
-                };
+                    return result.ErrorCode switch
+                    {
+                        ServiceError.NotFound => NotFound(result.Message),
+                        _ => BadRequest(result.Errors ?? new[] { result.Message })
+                    };
+                }
+                return Ok(result.Data);
             }
-            return Ok(result.Data);
+            catch 
+            {
+                return StatusCode(500, Messages.UnexpectedError);
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] BuyerDto dto)
         {
-            var result = await buyerService.CreateAsync(dto);
-            if (!result.Success)
-                return BadRequest(result.Errors ?? new[] { result.Message });
+            try
+            {
+                var result = await buyerService.CreateAsync(dto);
+                if (!result.Success)
+                    return BadRequest(result.Errors ?? new[] { result.Message });
 
-            return CreatedAtAction("compradores", new { id = result.Data.Id }, result.Data);
+                return StatusCode(StatusCodes.Status201Created, result.Data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, Messages.UnexpectedError);
+            }
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] BuyerDto dto)
         {
-            var result = await buyerService.UpdateAsync(id, dto);
-            if (!result.Success)
-                return BadRequest(result.Errors ?? new[] { result.Message });
+            try
+            {
+                var result = await buyerService.UpdateAsync(id, dto);
+                if (!result.Success)
+                    return BadRequest(result.Errors ?? new[] { result.Message });
 
-            return Ok(result.Data);
+                return Ok(result.Data);
+            }
+            catch
+            {
+                return StatusCode(500, Messages.UnexpectedError);
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var result = await buyerService.DeleteAsync(id);
-            if (!result.Success)
+            try
             {
-                return result.ErrorCode switch
+                var result = await buyerService.DeleteAsync(id);
+                if (!result.Success)
                 {
-                    ServiceError.Conflict => Conflict(result.Message),
-                    ServiceError.NotFound => NotFound(result.Message),
-                    _ => BadRequest(result.Errors ?? new[] { result.Message })
-                };
+                    return result.ErrorCode switch
+                    {
+                        ServiceError.Conflict => Conflict(result.Message),
+                        ServiceError.NotFound => NotFound(result.Message),
+                        _ => BadRequest(result.Errors ?? new[] { result.Message })
+                    };
+                }
+                return NoContent();
             }
-            return NoContent();
+            catch
+            {
+                return StatusCode(500, Messages.UnexpectedError);
+            }
         }
     }
 }
