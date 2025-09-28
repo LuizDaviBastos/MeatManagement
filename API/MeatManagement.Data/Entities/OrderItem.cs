@@ -5,7 +5,7 @@ namespace MeatManager.Data.Entities
     public class OrderItem : IEntity<Guid>
     {
         public Guid Id { get; set; }
-        public double Quantity { get; set; }
+        public double QuantityKg { get; set; }
         public decimal PricePerKg { get; set; }
         public decimal Total { get; set; }
 

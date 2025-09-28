@@ -60,13 +60,11 @@ namespace MeatManager.Data.Data
                 entity.HasOne(a => a.City)
                       .WithMany()
                       .HasForeignKey(a => a.CityId)
-                      .IsRequired()
                       .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasOne(a => a.State)
                       .WithMany()
                       .HasForeignKey(a => a.StateId)
-                      .IsRequired()
                       .OnDelete(DeleteBehavior.Restrict);
             });
 
@@ -115,7 +113,7 @@ namespace MeatManager.Data.Data
                       .IsRequired()
                       .OnDelete(DeleteBehavior.Restrict);
 
-                entity.Property(oi => oi.Quantity).IsRequired();
+                entity.Property(oi => oi.QuantityKg).IsRequired();
                 entity.Property(oi => oi.PricePerKg).IsRequired();
                 entity.Property(oi => oi.Total).IsRequired();
             });

@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using MeatManager.Model.Interfaces;
 using MeatManager.Service.DTOs;
 using MeatManager.Service.Interfaces;
 using MeatManager.Service.Services;

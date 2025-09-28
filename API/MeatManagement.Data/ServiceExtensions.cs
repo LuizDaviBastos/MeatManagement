@@ -1,4 +1,5 @@
 ﻿using MeatManager.Data.Data;
+using MeatManager.Data.Repositories;
 using MeatManager.Model.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,8 +13,10 @@ namespace MeatManager.Data
             string? connectionString = configuration.GetConnectionString("DbConnection");
             services.AddScoped<MeatManagerContext>(x => new(connectionString));
 
-
-            services.AddScoped<IBuyerRepository, BuyerRepository>()
+            services.AddScoped<IBuyerRepository, BuyerRepository>();
+            services.AddScoped<IMeatRepository, MeatRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<ILocationRepository, LocationRepository>();
         }
     }
 }

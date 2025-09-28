@@ -6,8 +6,8 @@ namespace MeatManager.Data.Entities
     {
         public Guid Id { get; set; }
         public Guid BuyerId { get; set; }
-        public Guid StateId { get; set; }
-        public Guid CityId { get; set; }
+        public Guid? StateId { get; set; }
+        public Guid? CityId { get; set; }
         public virtual Buyer Buyer { get; set; }
         public virtual State State { get; set; }
         public virtual City City { get; set; }

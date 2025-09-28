@@ -1,0 +1,1 @@
+export * as MeatService from './meat.service';

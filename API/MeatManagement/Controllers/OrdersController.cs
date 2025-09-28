@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MeatManager.Service.DTOs;
 using MeatManager.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,7 +33,7 @@ namespace MeatManager.API.Controllers
             }
 
             [HttpPost]
-            public async Task<IActionResult> Create([FromBody] object order)
+            public async Task<IActionResult> Create([FromBody] OrderDto order)
             {
                 var createResponse = await orderService.CreateAsync(order);
                 return Ok(createResponse);

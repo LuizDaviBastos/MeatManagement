@@ -1,0 +1,7 @@
+export * from "./Carne"
+export * from "./Carnes"
+export * from "./Comprador"
+export * from "./Compradores"
+export * from "./Pedido"
+export * from "./Pedidos"
+export * from "./Grid"
