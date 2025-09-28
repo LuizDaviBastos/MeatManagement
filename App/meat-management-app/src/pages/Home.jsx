@@ -97,7 +97,6 @@ export function Home() {
                 toggled={toggled}
                 onBackdropClick={() => setToggled(false)}
                 onBreakPoint={setBroken}
-                image="https://user-images.githubusercontent.com/25878302/144499035-2911184c-76d3-4611-86e7-bc4e8ff84ff5.jpg"
                 rtl={rtl}
                 breakPoint="md"
                 backgroundColor={hexToRgba(themes[theme].sidebar.backgroundColor, hasImage ? 0.9 : 1)}
@@ -109,9 +108,9 @@ export function Home() {
             >
                 <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                     <div style={{ padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: rtl ? 'flex-end' : 'flex-start', marginBottom: '24px', marginTop: '16px' }}>
-                        <h3 style={{ margin: 0, color: themes[theme].sidebar.color }}>
-                            <FaShoppingCart /> <span>Meat Management</span>
-                        </h3>
+                        <h2 style={{ margin: 0, color: themes[theme].sidebar.color, margin: 'auto', display: 'flex', gap: 10, alignItems: 'center' }}>
+                            <FaShoppingCart /> <span>Meats</span>
+                        </h2>
                     </div>
                     <div style={{ flex: 1, marginBottom: '32px' }}>
                         <div style={{ padding: '0 24px', marginBottom: '8px' }}>General</div>

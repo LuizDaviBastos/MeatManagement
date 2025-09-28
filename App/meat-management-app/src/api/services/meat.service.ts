@@ -1,28 +1,26 @@
 import http from "../http";
-import { Meat } from "../types";
+import { Meat } from "../../types";
 
-export const getAll = async (): Promise<Meat[]> => {
-    return [<Meat>{name: 'test'}];
-  const response = await http.get<Meat[]>("/values");
+export const getAllMeats = async (): Promise<Meat[]> => {
+  const response = await http.get<Meat[]>("/carnes");
   return response.data;
 };
 
-export const getbyId = async (id: number): Promise<Meat> => {
-  const response = await http.get<Meat>(`/values/${id}`);
+export const getMeatById = async (id: string): Promise<Meat> => {
+  const response = await http.get<Meat>(`/carnes/${id}`);
   return response.data;
 };
 
-export const create = async (value: Meat): Promise<Meat> => {
-  const response = await http.post<Meat, Meat>("/values", value);
-  return response;
+export const createMeat = async (meat: Meat): Promise<Meat> => {
+  const response = await http.post<Meat>("/carnes", meat);
+  return response.data;
 };
 
-export const update = async (id: number, value: Partial<Meat>): Promise<Meat> => {
-  const response = await http.put<Partial<Meat>, Meat>(`/values/${id}`, value);
-  return response;
+export const updateMeat = async (id: string, meat: Partial<Meat>): Promise<Meat> => {
+  const response = await http.put<Meat>(`/carnes/${id}`, meat);
+  return response.data;
 };
 
-export const remove = async (id: number): Promise<void> => {
-  await http.delete(`/values/${id}`);
+export const deleteMeat = async (id: string): Promise<void> => {
+  await http.delete(`/carnes/${id}`);
 };
-
