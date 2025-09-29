@@ -69,7 +69,7 @@ yarn install
 3. Configure a URL da API em `.env` (crie se não existir):
 
 ```env
-REACT_APP_API_URL=https://localhost:5049
+REACT_APP_API_URL=http://localhost:5049
 ```
 
 4. Rode a aplicação React:
