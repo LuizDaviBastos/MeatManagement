@@ -34,7 +34,7 @@ cd API
 dotnet restore MeatManagement.sln
 ```
 
-3. Configure a string de conexão em `appsettings.json` ou variáveis de ambiente:
+3. Configure a string de conexão em `appsettings.json`:
 
 ```json
 "ConnectionStrings": {
@@ -66,7 +66,7 @@ npm install
 yarn install
 ```
 
-3. Configure a URL da API em `.env` (crie se não existir):
+3. Configure a URL da API em `.env`:
 
 ```env
 REACT_APP_API_URL=http://localhost:5049
