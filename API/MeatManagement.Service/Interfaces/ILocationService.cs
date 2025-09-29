@@ -4,7 +4,7 @@ namespace MeatManager.Service.Interfaces
 {
     public interface ILocationService
     {
-        Task<IEnumerable<State>> GetStatesAsync();
-        Task<IEnumerable<City>> GetCitiesByStateAsync(Guid stateId);
+        Task<ServiceResult<IEnumerable<State>>> GetStatesAsync();
+        Task<ServiceResult<IEnumerable<City>>> GetCitiesByStateAsync(Guid stateId);
     }
 }

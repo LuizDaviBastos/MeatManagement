@@ -27,7 +27,7 @@ namespace MeatManager.API.Controllers
 
                 return Ok(result.Data);
             }
-            catch
+            catch (Exception ex)
             {
                 return StatusCode(500, Messages.UnexpectedError);
             }
@@ -66,7 +66,7 @@ namespace MeatManager.API.Controllers
 
                 return StatusCode(StatusCodes.Status201Created, result.Data);
             }
-            catch
+            catch (Exception ex)
             {
                 return StatusCode(500, Messages.UnexpectedError);
             }
@@ -83,7 +83,7 @@ namespace MeatManager.API.Controllers
 
                 return Ok(result.Data);
             }
-            catch
+            catch (Exception ex)
             {
                 return StatusCode(500, Messages.UnexpectedError);
             }

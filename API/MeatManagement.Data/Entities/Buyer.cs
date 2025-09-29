@@ -10,7 +10,7 @@ namespace MeatManager.Data.Entities
         public string Document { get; set; }
         public DocumentType DocumentType { get; set; }
         public DateTime CreatedAt { get; set; }
-        public ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
         public virtual Address? Address { get; set; }
     }
 }

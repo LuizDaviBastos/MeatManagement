@@ -76,21 +76,13 @@ namespace MeatManager.Data.Data
                 .Property(m => m.Origin)
                 .HasConversion<string>()
                 .IsRequired();
-                entity.Property(m => m.PricePerKg).IsRequired().HasPrecision(10, 2);
-                entity.Property(m => m.WeightKg).IsRequired();
                 entity.Property(m => m.CreatedAt).IsRequired();
-
-                entity.ToTable(t =>
-                {
-                    t.HasCheckConstraint("CK_Meat_Price_Positive", "PricePerKg >= 0");
-                    t.HasCheckConstraint("CK_Meat_Weight_Positive", "WeightKg >= 0");
-                });
             });
 
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.HasKey(o => o.Id);
-                entity.Property(o => o.CreatedAt).IsRequired();
+                entity.Property(o => o.OrderDate).IsRequired();
                 entity.HasOne(o => o.Buyer)
                       .WithMany(b => b.Orders)
                       .HasForeignKey(o => o.BuyerId)
@@ -113,10 +105,10 @@ namespace MeatManager.Data.Data
                       .IsRequired()
                       .OnDelete(DeleteBehavior.Restrict);
 
-                entity.Property(oi => oi.QuantityKg).IsRequired();
-                entity.Property(oi => oi.PricePerKg).IsRequired();
-                entity.Property(oi => oi.Total).IsRequired();
+                entity.Property(oi => oi.Price).IsRequired();
             });
+
+            modelBuilder.SeedStatesAndCities();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -124,6 +116,7 @@ namespace MeatManager.Data.Data
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer(connectionString, op => op.MigrationsAssembly("MeatManager.Data"));
+                optionsBuilder.UseLazyLoadingProxies();
             }
         }
     }

@@ -13,8 +13,6 @@ namespace MeatManager.Service
     {
         public static void ConfigureServiceApp(this IServiceCollection services, IConfiguration configuration)
         {
-            MapsterConfig.RegisterMappings();
-
             services.AddScoped<IValidator<MeatDto>, MeatDtoValidator>();
             services.AddScoped<IValidator<BuyerDto>, BuyerDtoValidator>();
             services.AddScoped<IValidator<OrderDto>, OrderDtoValidator>();
@@ -24,6 +22,12 @@ namespace MeatManager.Service
             services.AddScoped<IMeatService, MeatService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IBuyerService, BuyerService>();
+
+            services.AddAutoMapper(x =>
+            {
+                x.AddProfile<ModelToDtoProfile>();
+                
+            });
         }
     }
 }

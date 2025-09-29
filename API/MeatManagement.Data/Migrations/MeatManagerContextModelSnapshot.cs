@@ -18,6 +18,9 @@ namespace MeatManager.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.9")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -99,6 +102,104 @@ namespace MeatManager.Data.Migrations
                     b.HasIndex("StateId");
 
                     b.ToTable("City");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000001"),
+                            Name = "São Paulo",
+                            StateId = new Guid("1e3f5a1b-2d4c-4f8a-9e2a-1234567890ab")
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000002"),
+                            Name = "Campinas",
+                            StateId = new Guid("1e3f5a1b-2d4c-4f8a-9e2a-1234567890ab")
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000003"),
+                            Name = "Santos",
+                            StateId = new Guid("1e3f5a1b-2d4c-4f8a-9e2a-1234567890ab")
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000004"),
+                            Name = "Rio de Janeiro",
+                            StateId = new Guid("2b4c6d7e-3f8a-4b2c-9f3d-2345678901bc")
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000005"),
+                            Name = "Niterói",
+                            StateId = new Guid("2b4c6d7e-3f8a-4b2c-9f3d-2345678901bc")
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000006"),
+                            Name = "Petrópolis",
+                            StateId = new Guid("2b4c6d7e-3f8a-4b2c-9f3d-2345678901bc")
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000007"),
+                            Name = "Belo Horizonte",
+                            StateId = new Guid("3c5d7e8f-4a1b-5c3d-0a4e-3456789012cd")
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000008"),
+                            Name = "Uberlândia",
+                            StateId = new Guid("3c5d7e8f-4a1b-5c3d-0a4e-3456789012cd")
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000009"),
+                            Name = "Ouro Preto",
+                            StateId = new Guid("3c5d7e8f-4a1b-5c3d-0a4e-3456789012cd")
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000010"),
+                            Name = "Curitiba",
+                            StateId = new Guid("4d6e7f8a-1b2c-3d4e-5f6a-4567890123ee")
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000011"),
+                            Name = "Londrina",
+                            StateId = new Guid("4d6e7f8a-1b2c-3d4e-5f6a-4567890123ee")
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000012"),
+                            Name = "Porto Alegre",
+                            StateId = new Guid("5e7f8a9b-2c3d-4e5f-6a7b-5678901234ff")
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000013"),
+                            Name = "Caxias do Sul",
+                            StateId = new Guid("5e7f8a9b-2c3d-4e5f-6a7b-5678901234ff")
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000014"),
+                            Name = "Salvador",
+                            StateId = new Guid("6f8a9b0c-3d4e-5f6a-7b8c-6789012345aa")
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000015"),
+                            Name = "Feira de Santana",
+                            StateId = new Guid("6f8a9b0c-3d4e-5f6a-7b8c-6789012345aa")
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000016"),
+                            Name = "Brasília",
+                            StateId = new Guid("7a9b0c1d-4e5f-6a7b-8c9d-7890123456bb")
+                        });
                 });
 
             modelBuilder.Entity("MeatManager.Data.Entities.Meat", b =>
@@ -119,21 +220,9 @@ namespace MeatManager.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("PricePerKg")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<double>("WeightKg")
-                        .HasColumnType("float");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Meats", t =>
-                        {
-                            t.HasCheckConstraint("CK_Meat_Price_Positive", "PricePerKg >= 0");
-
-                            t.HasCheckConstraint("CK_Meat_Weight_Positive", "WeightKg >= 0");
-                        });
+                    b.ToTable("Meats");
                 });
 
             modelBuilder.Entity("MeatManager.Data.Entities.Order", b =>
@@ -145,7 +234,7 @@ namespace MeatManager.Data.Migrations
                     b.Property<Guid>("BuyerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -161,19 +250,17 @@ namespace MeatManager.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("CurrencyCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("MeatId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("PricePerKg")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<double>("QuantityKg")
-                        .HasColumnType("float");
-
-                    b.Property<decimal>("Total")
+                    b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
@@ -204,6 +291,50 @@ namespace MeatManager.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("State");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("1e3f5a1b-2d4c-4f8a-9e2a-1234567890ab"),
+                            Name = "São Paulo",
+                            UF = "SP"
+                        },
+                        new
+                        {
+                            Id = new Guid("2b4c6d7e-3f8a-4b2c-9f3d-2345678901bc"),
+                            Name = "Rio de Janeiro",
+                            UF = "RJ"
+                        },
+                        new
+                        {
+                            Id = new Guid("3c5d7e8f-4a1b-5c3d-0a4e-3456789012cd"),
+                            Name = "Minas Gerais",
+                            UF = "MG"
+                        },
+                        new
+                        {
+                            Id = new Guid("4d6e7f8a-1b2c-3d4e-5f6a-4567890123ee"),
+                            Name = "Paraná",
+                            UF = "PR"
+                        },
+                        new
+                        {
+                            Id = new Guid("5e7f8a9b-2c3d-4e5f-6a7b-5678901234ff"),
+                            Name = "Rio Grande do Sul",
+                            UF = "RS"
+                        },
+                        new
+                        {
+                            Id = new Guid("6f8a9b0c-3d4e-5f6a-7b8c-6789012345aa"),
+                            Name = "Bahia",
+                            UF = "BA"
+                        },
+                        new
+                        {
+                            Id = new Guid("7a9b0c1d-4e5f-6a7b-8c9d-7890123456bb"),
+                            Name = "Distrito Federal",
+                            UF = "DF"
+                        });
                 });
 
             modelBuilder.Entity("MeatManager.Data.Entities.Address", b =>
@@ -274,8 +405,7 @@ namespace MeatManager.Data.Migrations
 
             modelBuilder.Entity("MeatManager.Data.Entities.Buyer", b =>
                 {
-                    b.Navigation("Address")
-                        .IsRequired();
+                    b.Navigation("Address");
 
                     b.Navigation("Orders");
                 });

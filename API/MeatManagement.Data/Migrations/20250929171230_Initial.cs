@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace MeatManager.Data.Migrations
 {
     /// <inheritdoc />
@@ -33,15 +35,11 @@ namespace MeatManager.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Origin = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PricePerKg = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
-                    WeightKg = table.Column<double>(type: "float", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Meats", x => x.Id);
-                    table.CheckConstraint("CK_Meat_Price_Positive", "PricePerKg >= 0");
-                    table.CheckConstraint("CK_Meat_Weight_Positive", "WeightKg >= 0");
                 });
 
             migrationBuilder.CreateTable(
@@ -62,7 +60,7 @@ namespace MeatManager.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     BuyerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -100,9 +98,8 @@ namespace MeatManager.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    QuantityKg = table.Column<double>(type: "float", nullable: false),
-                    PricePerKg = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CurrencyCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MeatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -153,6 +150,43 @@ namespace MeatManager.Data.Migrations
                         principalTable: "State",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "State",
+                columns: new[] { "Id", "Name", "UF" },
+                values: new object[,]
+                {
+                    { new Guid("1e3f5a1b-2d4c-4f8a-9e2a-1234567890ab"), "São Paulo", "SP" },
+                    { new Guid("2b4c6d7e-3f8a-4b2c-9f3d-2345678901bc"), "Rio de Janeiro", "RJ" },
+                    { new Guid("3c5d7e8f-4a1b-5c3d-0a4e-3456789012cd"), "Minas Gerais", "MG" },
+                    { new Guid("4d6e7f8a-1b2c-3d4e-5f6a-4567890123ee"), "Paraná", "PR" },
+                    { new Guid("5e7f8a9b-2c3d-4e5f-6a7b-5678901234ff"), "Rio Grande do Sul", "RS" },
+                    { new Guid("6f8a9b0c-3d4e-5f6a-7b8c-6789012345aa"), "Bahia", "BA" },
+                    { new Guid("7a9b0c1d-4e5f-6a7b-8c9d-7890123456bb"), "Distrito Federal", "DF" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "City",
+                columns: new[] { "Id", "Name", "StateId" },
+                values: new object[,]
+                {
+                    { new Guid("10000000-0000-0000-0000-000000000001"), "São Paulo", new Guid("1e3f5a1b-2d4c-4f8a-9e2a-1234567890ab") },
+                    { new Guid("10000000-0000-0000-0000-000000000002"), "Campinas", new Guid("1e3f5a1b-2d4c-4f8a-9e2a-1234567890ab") },
+                    { new Guid("10000000-0000-0000-0000-000000000003"), "Santos", new Guid("1e3f5a1b-2d4c-4f8a-9e2a-1234567890ab") },
+                    { new Guid("10000000-0000-0000-0000-000000000004"), "Rio de Janeiro", new Guid("2b4c6d7e-3f8a-4b2c-9f3d-2345678901bc") },
+                    { new Guid("10000000-0000-0000-0000-000000000005"), "Niterói", new Guid("2b4c6d7e-3f8a-4b2c-9f3d-2345678901bc") },
+                    { new Guid("10000000-0000-0000-0000-000000000006"), "Petrópolis", new Guid("2b4c6d7e-3f8a-4b2c-9f3d-2345678901bc") },
+                    { new Guid("10000000-0000-0000-0000-000000000007"), "Belo Horizonte", new Guid("3c5d7e8f-4a1b-5c3d-0a4e-3456789012cd") },
+                    { new Guid("10000000-0000-0000-0000-000000000008"), "Uberlândia", new Guid("3c5d7e8f-4a1b-5c3d-0a4e-3456789012cd") },
+                    { new Guid("10000000-0000-0000-0000-000000000009"), "Ouro Preto", new Guid("3c5d7e8f-4a1b-5c3d-0a4e-3456789012cd") },
+                    { new Guid("10000000-0000-0000-0000-000000000010"), "Curitiba", new Guid("4d6e7f8a-1b2c-3d4e-5f6a-4567890123ee") },
+                    { new Guid("10000000-0000-0000-0000-000000000011"), "Londrina", new Guid("4d6e7f8a-1b2c-3d4e-5f6a-4567890123ee") },
+                    { new Guid("10000000-0000-0000-0000-000000000012"), "Porto Alegre", new Guid("5e7f8a9b-2c3d-4e5f-6a7b-5678901234ff") },
+                    { new Guid("10000000-0000-0000-0000-000000000013"), "Caxias do Sul", new Guid("5e7f8a9b-2c3d-4e5f-6a7b-5678901234ff") },
+                    { new Guid("10000000-0000-0000-0000-000000000014"), "Salvador", new Guid("6f8a9b0c-3d4e-5f6a-7b8c-6789012345aa") },
+                    { new Guid("10000000-0000-0000-0000-000000000015"), "Feira de Santana", new Guid("6f8a9b0c-3d4e-5f6a-7b8c-6789012345aa") },
+                    { new Guid("10000000-0000-0000-0000-000000000016"), "Brasília", new Guid("7a9b0c1d-4e5f-6a7b-8c9d-7890123456bb") }
                 });
 
             migrationBuilder.CreateIndex(

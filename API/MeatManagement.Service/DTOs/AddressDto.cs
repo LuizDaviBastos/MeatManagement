@@ -2,7 +2,7 @@
 {
     public class AddressDto
     {
-        public Guid? CityId { get; set; }
-        public Guid? StateId { get; set; }
+        public string? CityId { get; set; }
+        public string? StateId { get; set; }
     }
 }

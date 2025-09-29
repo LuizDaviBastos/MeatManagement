@@ -1,7 +1,6 @@
 export interface Meat {
     id?: string
     name: string
-    pricePerKg: number
-    weightKg: number
+    origin?: number
     createdAt?: string
 }

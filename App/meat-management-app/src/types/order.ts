@@ -2,16 +2,17 @@ import { Buyer } from "./buyer";
 
 export interface OrderItem {
   id?: string;
+  meatId: string;
   currencyCode: string;
-  quantityKg: number;
-  pricePerKg: number;
-  total: number;
-  totalBRL: number;
+  price: number;
+  priceBRL?: number;
 }
 
 export interface Order {
   id?: string;
-  buyer: Buyer;
-  createdAt?: string;
+  buyer?: Buyer;
+  total: number;
+  totalBRL?: number;
+  orderDate?: Date;
   items: OrderItem[];
 }

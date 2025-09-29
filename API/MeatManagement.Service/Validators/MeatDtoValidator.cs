@@ -11,11 +11,6 @@ namespace MeatManager.Service.Validators
                 .NotEmpty().WithMessage("O nome do produto é obrigatório.")
                 .MaximumLength(100);
 
-            RuleFor(x => x.PricePerKg)
-                .GreaterThan(0).WithMessage("O preço por kg deve ser maior que zero.");
-
-            RuleFor(x => x.WeightKg)
-                .GreaterThan(0).WithMessage("O peso deve ser maior que zero.");
         }
     }
 }

@@ -83,7 +83,7 @@ namespace MeatManager.API
 
                 return Ok(result.Data);
             }
-            catch
+            catch(Exception ex)
             {
                 return StatusCode(500, Messages.UnexpectedError);
             }

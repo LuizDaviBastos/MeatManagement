@@ -1,0 +1,12 @@
+.delete-item {
+    border-radius: 30px;
+    height: 40px;
+    width: 40px;
+}
+
+.fab {
+    width: 30px;
+    height: 30px;
+    min-height: 30px; /* necessário para MUI */
+    font-size: 16px; /* ajusta o ícone */
+  }

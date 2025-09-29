@@ -1,5 +1,5 @@
-﻿using Mapster;
-using MeatManager.Data.Data;
+﻿using MeatManager.Data.Data;
+using MeatManager.Data.Mapping;
 using MeatManager.Model.Entities;
 using MeatManager.Model.Interfaces;
 using MeatManager.Service.Repositories;
@@ -19,28 +19,28 @@ namespace MeatManager.Data.Repositories
 
         public async Task<Meat> SaveAsync(Meat entity)
         {
-            var meatEntity = entity.Adapt<MeatEntity>();
+            var meatEntity = entity.ToEntity();
             var savedEntity = await base.SaveAsync(meatEntity);
-            return savedEntity.Adapt<Meat>();
+            return savedEntity.ToModel();
         }
 
         public async Task<Meat> UpdateAsync(Meat entity)
         {
-            var meatEntity = entity.Adapt<MeatEntity>();
+            var meatEntity = entity.ToEntity();
             var updatedEntity = await base.UpdateAsync(meatEntity);
-            return updatedEntity.Adapt<Meat>();
+            return updatedEntity.ToModel();
         }
 
         public async Task<IEnumerable<Meat>> GetAllAsync()
         {
             var data = await base.GetAllAsync();
-            return data.Adapt<IEnumerable<Meat>>();
+            return data.Select(m => m.ToModel());
         }
 
         public async Task<Meat?> GetAsync(Guid id)
         {
             var data = await base.GetAsync(id);
-            return data?.Adapt<Meat>();
+            return data?.ToModel();
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Mapster;
+using AutoMapper;
 using MeatManager.Model.Entities;
 using MeatManager.Model.Interfaces;
 using MeatManager.Service.DTOs;
@@ -12,11 +12,13 @@ namespace MeatManager.Service.Services
     {
         private readonly IBuyerRepository buyerRepository;
         private readonly IValidator<BuyerDto> validator;
+        private readonly IMapper mapper;
 
-        public BuyerService(IBuyerRepository buyerRepository, IValidator<BuyerDto> validator)
+        public BuyerService(IBuyerRepository buyerRepository, IValidator<BuyerDto> validator, IMapper mapper)
         {
             this.buyerRepository = buyerRepository;
             this.validator = validator;
+            this.mapper = mapper;
         }
 
         public async Task<ServiceResult<BuyerDto>> CreateAsync(BuyerDto dto)
@@ -25,8 +27,8 @@ namespace MeatManager.Service.Services
             if (!validationResult.IsValid)
                 return ServiceResult<BuyerDto>.Fail(validationResult.Errors.Select(e => e.ErrorMessage));
 
-            var buyer = dto.Adapt<Buyer>();
-            
+            var buyer = mapper.Map<Buyer>(dto);
+
             try
             {
                 buyer.SetDocument(dto.Document);
@@ -39,7 +41,7 @@ namespace MeatManager.Service.Services
             buyer.CreatedAt = DateTime.UtcNow;
 
             var response = await buyerRepository.SaveAsync(buyer);
-            return response.Adapt<BuyerDto>();
+            return mapper.Map<BuyerDto>(response);
         }
 
         public async Task<ServiceResult<bool>> DeleteAsync(Guid id)
@@ -62,7 +64,7 @@ namespace MeatManager.Service.Services
         public async Task<ServiceResult<IEnumerable<BuyerDto>>> GetAllAsync()
         {
             var buyers = await buyerRepository.GetAllAsync();
-            var buyerDtos = buyers.Adapt<IEnumerable<BuyerDto>>();
+            var buyerDtos = mapper.Map<IEnumerable<BuyerDto>>(buyers);
             return ServiceResult<IEnumerable<BuyerDto>>.Ok(buyerDtos);
         }
 
@@ -72,20 +74,24 @@ namespace MeatManager.Service.Services
             if (buyer == null)
                 return ServiceResult<BuyerDto>.Fail(Messages.ItemNotFound, ServiceError.NotFound);
 
-            return buyer.Adapt<BuyerDto>();
+            return mapper.Map<BuyerDto>(buyer);
         }
 
         public async Task<ServiceResult<BuyerDto>> UpdateAsync(Guid id, BuyerDto dto)
         {
+            var exists = await buyerRepository.ExistsAsync(id);
+            if (!exists)
+                return ServiceResult<BuyerDto>.Fail(Messages.ItemNotFound, ServiceError.NotFound);
+
             var validationResult = await validator.ValidateAsync(dto);
             if (!validationResult.IsValid)
                 return ServiceResult<BuyerDto>.Fail(validationResult.Errors.Select(e => e.ErrorMessage));
 
-            var buyer = dto.Adapt<Buyer>();
+            var buyer = mapper.Map<Buyer>(dto);
             buyer.Id = id;
 
             var response = await buyerRepository.UpdateAsync(buyer);
-            return response.Adapt<BuyerDto>();
+            return mapper.Map<BuyerDto>(response);
         }
     }
 }

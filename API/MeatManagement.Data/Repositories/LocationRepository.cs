@@ -1,5 +1,5 @@
-﻿using Mapster;
-using MeatManager.Data.Data;
+﻿using MeatManager.Data.Data;
+using MeatManager.Data.Mapping;
 using MeatManager.Model.Entities;
 using MeatManager.Model.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +11,8 @@ namespace MeatManager.Data.Repositories
     public class LocationRepository : ILocationRepository
     {
         private readonly MeatManagerContext context;
-        public LocationRepository(MeatManagerContext context) 
+
+        public LocationRepository(MeatManagerContext context)
         {
             this.context = context;
         }
@@ -19,13 +20,13 @@ namespace MeatManager.Data.Repositories
         public async Task<IEnumerable<City>> GetCitiesByStateAsync(Guid stateId)
         {
             var results = await context.Set<CityEntity>().Where(c => c.StateId == stateId).ToListAsync();
-            return results.Adapt<IEnumerable<City>>();
+            return results.Select(c => c.ToModel());
         }
 
         public async Task<IEnumerable<State>> GetStatesAsync()
         {
             var results = await context.Set<StateEntity>().ToListAsync();
-            return results.Adapt<IEnumerable<State>>();
+            return results.Select(s => s.ToModel());
         }
     }
 }

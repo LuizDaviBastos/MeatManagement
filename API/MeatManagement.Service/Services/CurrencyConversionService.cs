@@ -16,27 +16,34 @@ namespace MeatManager.Service.Services
 
         public async Task<decimal> ConvertToBRLAsync(decimal amount, string currencyCode)
         {
-            if (currencyCode == "BRL") return amount;
+            if (currencyCode == "BRL" || string.IsNullOrEmpty(currencyCode)) return amount;
 
-            if (!cache.TryGetValue(currencyCode, out var rate) || (DateTime.UtcNow - rate.LastUpdated).TotalHours > 24)
+            try
             {
-                var response = await httpClient.GetFromJsonAsync<Dictionary<string, AwesomeApiResponse>>(
-                    $"https://economia.awesomeapi.com.br/json/last/{currencyCode}-BRL");
-
-                if (response == null) throw new Exception("Error fetching exchange rate.");
-
-                var rateInfo = response[$"{currencyCode}BRL"];
-                rate = new CurrencyRate
+                if (!cache.TryGetValue(currencyCode, out var rate) || (DateTime.UtcNow - rate.LastUpdated).TotalHours > 24)
                 {
-                    Code = currencyCode,
-                    Rate = rateInfo.Bid,
-                    LastUpdated = DateTime.UtcNow
-                };
+                    var response = await httpClient.GetFromJsonAsync<Dictionary<string, AwesomeApiResponse>>(
+                              $"https://economia.awesomeapi.com.br/json/last/{currencyCode}-BRL");
 
-                cache[currencyCode] = rate;
+                    if (response == null) throw new Exception("Error fetching exchange rate.");
+
+                    var rateInfo = response[$"{currencyCode}BRL"];
+                    rate = new CurrencyRate
+                    {
+                        Code = currencyCode,
+                        Rate = rateInfo.Bid,
+                        LastUpdated = DateTime.UtcNow
+                    };
+
+                    cache[currencyCode] = rate;
+                }
+                return amount * rate.Rate;
             }
-
-            return amount * rate.Rate;
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error converting {currencyCode} to BRL: {ex.Message}");
+                return amount;
+            }
         }
     }
 

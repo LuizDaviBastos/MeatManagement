@@ -3,10 +3,9 @@
     public class OrderItemDto
     {
         public Guid? Id { get; set; }
-        public string CurrencyCode { get; set; }
-        public double QuantityKg { get; set; }
-        public decimal PricePerKg { get; set; }
-        public decimal Total { get; set; }
-        public decimal TotalBRL { get; set; }
+        public string? MeatId { get; set; }
+        public string? CurrencyCode { get; set; }
+        public decimal? Price { get; set; }
+        public decimal PriceBRL { get; internal set; }
     }
 }
