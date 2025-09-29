@@ -12,7 +12,9 @@ namespace MeatManager.Service.Validators
                 .MaximumLength(150).WithMessage("O nome do comprador não pode exceder 150 caracteres");
 
             RuleFor(x => x.Document)
-                .NotEmpty().WithMessage("O documento do comprador é obrigatório")
+                .NotEmpty()
+                .WithMessage("O documento do comprador é obrigatório")
+                .MinimumLength(11).WithMessage("O documento do comprador é obrigatório")
                 .MaximumLength(20).WithMessage("O documento do comprador não pode exceder 20 caracteres");
         }
     }

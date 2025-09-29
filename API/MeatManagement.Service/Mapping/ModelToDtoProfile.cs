@@ -33,24 +33,6 @@ namespace MeatManager.Service.Mapping
                          StateId = Guid.TryParse(src.Address.StateId, out var stateId) ? stateId : Guid.Empty
                      };
                  });
-  /*       CreateMap<Address, AddressDto>()
-                .ForMember(dest => dest.StateId, opt => opt.MapFrom(src => src.StateId.ToString()))
-                .ForMember(dest => dest.CityId, opt => opt.MapFrom(src => src.CityId.ToString()))
-                .ReverseMap();
-
-
-            CreateMap<AddressDto, Address>()
-                .ForMember(dest => dest.StateId, opt => opt.MapFrom(src => src.StateId.ToString()))
-                .ForMember(dest => dest.CityId, opt => opt.MapFrom(src => src.CityId.ToString()))
-                 .AfterMap((src, dest) =>
-                 {
-                     dest = new Address
-                     {
-                         CityId = Guid.TryParse(src.CityId, out var cityGuid) ? cityGuid : Guid.Empty,
-                         StateId = Guid.TryParse(src.StateId, out var stateId) ? stateId : Guid.Empty
-                     };
-                 })
-                .ReverseMap();*/
 
             CreateMap<Order, OrderDto>()
                 .ReverseMap();
