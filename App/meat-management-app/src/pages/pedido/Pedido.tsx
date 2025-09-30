@@ -10,14 +10,15 @@ import { getCurrencies, getCurrencySymbol } from "../../functions";
 import { NumericFormat } from "react-number-format";
 
 export function Pedido() {
-    const navigate = useNavigate();
-    const { id } = useParams<{ id: string }>();
-    const [order, setOrder] = useState<Order>({
+    const newOrder = {
         total: 0,
         orderDate: new Date(),
         buyer: { name: "", document: "", address: { stateId: "", cityId: "" } },
         items: [{ price: 0, total: 0, meatId: "", currencyCode: 'BRL' } as OrderItem],
-    });
+    };
+    const navigate = useNavigate();
+    const { id } = useParams<{ id: string }>();
+    const [order, setOrder] = useState<Order>(newOrder);
 
     const [meats, setMeats] = useState<Meat[]>([]);
     const [buyers, setBuyers] = useState<Buyer[]>([]);
@@ -61,7 +62,7 @@ export function Pedido() {
                     setAlertOpen(true);
                 });
         } else {
-            setOrder((rest) => ({ ...rest, orderDate: new Date(), items: [{ price: 0, total: 0, meatId: "", currencyCode: 'BRL'}] }));
+            setOrder((rest) => (newOrder));
         }
     }, [id]);
 
