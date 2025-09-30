@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { TextField, MenuItem, Box, Grid } from "@mui/material";
 import { Buyer, City, State } from "../../types";
-import { ButtonSave } from "../../components/ButtonSave";
-import { ButtonDelete, ConfirmModal } from "../../components";
+import { ButtonDelete, ConfirmModal, ButtonSave, DocumentInput } from "../../components";
 import { BuyerService, LocationService } from "../../api/services";
 import { useNavigate, useParams } from "react-router-dom";
-import { DocumentInput } from "../../components/DocumentInput";
 
 export function Comprador() {
     const navigate = useNavigate();

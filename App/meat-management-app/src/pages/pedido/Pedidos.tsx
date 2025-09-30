@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Grid, createActionColumn } from "../../components";
+import { Grid } from "../../components";
+import { createActionColumn } from "../../functions";
 import { Buyer, Order } from "../../types";
 import { OrderService } from "../../api/services";
 import { useNavigate } from "react-router-dom";

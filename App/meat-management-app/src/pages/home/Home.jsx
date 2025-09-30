@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Sidebar, Menu, SubMenu, MenuItem, menuClasses } from 'react-pro-sidebar';
 import { FaShoppingCart, FaUser, FaPlus, FaList, FaDrumstickBite, FaClipboardList } from 'react-icons/fa';
 import { Outlet, useNavigate } from 'react-router-dom';
-import './Home.css';
 
 export function Home() {
   const navigate = useNavigate();

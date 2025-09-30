@@ -1,9 +1,8 @@
 import "./Pedido.css";
 import { useEffect, useState } from "react";
-import { TextField, MenuItem, Box, Grid, IconButton, Fab, InputLabel } from "@mui/material";
+import { TextField, MenuItem, Box, Grid, Fab } from "@mui/material";
 import { Buyer, Meat, Order, OrderItem } from "../../types";
-import { ButtonSave } from "../../components/ButtonSave";
-import { ButtonDelete, ConfirmModal } from "../../components";
+import { ButtonDelete, ConfirmModal, ButtonSave } from "../../components";
 import { BuyerService, OrderService, MeatService } from "../../api/services";
 import { useNavigate, useParams } from "react-router-dom";
 import { Add, Delete } from "@mui/icons-material";
@@ -172,7 +171,7 @@ export function Pedido() {
                     onChange={(e) =>
                         setOrder((prev) => ({
                             ...prev,
-                            orderDate: new Date(e.target.value) // volta para objeto Date
+                            orderDate: new Date(e.target.value)
                         }))
                     }
                     InputLabelProps={{ shrink: true }}

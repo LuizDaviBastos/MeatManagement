@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { TextField, Box, Grid, MenuItem } from "@mui/material";
 import { Meat } from "../../types";
-import { ButtonSave } from "../../components/ButtonSave";
-import { ButtonDelete, ConfirmModal } from "../../components";
+import { ButtonDelete, ConfirmModal, ButtonSave } from "../../components";
 import { MeatService } from "../../api/services";
 import { useNavigate, useParams } from "react-router-dom";
 import { getMeatOrigins } from "../../functions";

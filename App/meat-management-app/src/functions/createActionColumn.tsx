@@ -1,5 +1,4 @@
 import { IconButton } from "@mui/material";
-import { FaEdit, FaTrash } from "react-icons/fa";
 import DeleteIcon from '@mui/icons-material/Delete';
 import Edit from '@mui/icons-material/Edit';
 

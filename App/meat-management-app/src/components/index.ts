@@ -1,5 +1,5 @@
 export * from "./Grid"
-export * from "./ActionColumn"
 export * from "./ButtonSave"
 export * from "./ButtonDelete"
 export * from "./ConfirmModal"
+export * from "./DocumentInput"

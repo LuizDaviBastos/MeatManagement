@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { ConfirmModal, Grid, createActionColumn } from "../../components";
+import { ConfirmModal, Grid } from "../../components";
 import { MeatService } from "../../api/services";
 import { Meat } from "../../types";
 import { useNavigate } from "react-router-dom";
-import { formatOrigin } from "../../functions";
+import { formatOrigin, createActionColumn } from "../../functions";
 
 export function Carnes() {
     const navigate = useNavigate();

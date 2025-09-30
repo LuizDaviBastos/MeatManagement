@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { ConfirmModal, Grid, createActionColumn } from "../../components";
+import { ConfirmModal, Grid } from "../../components";
 import { BuyerService } from "../../api/services";
 import { Buyer } from "../../types";
-import { formatCpfCnpj } from "../../functions"
+import { formatCpfCnpj, createActionColumn } from "../../functions"
 import { useNavigate } from "react-router-dom";
 
 export function Compradores() {
